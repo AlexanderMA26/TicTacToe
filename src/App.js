@@ -2,11 +2,15 @@ import './App.css'
 import { useState } from 'react';
 
 function Board({xIsNext, squares, onPlay}) {
+  //Either updates the board or declares a winner
   function handleClick(i) {
     if (calculateWinner(squares) || squares[i]){
       return;
     }
+    //makes a copy of the current gameboard for time
     const nextSquares = squares.slice();
+
+    //Finds which shape is next
     if (xIsNext){
       nextSquares[i] = 'X';
     }else{
@@ -23,6 +27,7 @@ function Board({xIsNext, squares, onPlay}) {
   }
   return (
 
+    //Sets up game board
   <>
   <div className='status'>{status}</div>
  <div className="board-row">
@@ -51,7 +56,7 @@ export default function Game(){
   const xIsNext = currentMove % 2 === 0;
 
 
-  
+  //handels game play
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
@@ -60,6 +65,7 @@ export default function Game(){
   function jump(nextMove){
     setCurrentMove(nextMove);
   }
+  //handles time 
   const moves = history.map((squares, move) => {
     let description;
     if (move > 0){
@@ -68,12 +74,14 @@ export default function Game(){
       description = "Go to game start.";
     }
     return(
+      //If one of the buttons is pressed, go to that move.
       <li key={move}><button onClick={() => jump(move)}>{description}</button> </li>
     );
 
   });
   
   return (
+    //Returns the gamesate
     <div className="game">
       <div className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
@@ -104,7 +112,7 @@ function calculateWinner(squares) {
   }
   return null;
 }
-
+//Describes a square
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>{value}</button>
